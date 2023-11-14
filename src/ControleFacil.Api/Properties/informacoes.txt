@@ -1,2 +1,9 @@
 instalar o dotnet-ef
     dotnet tool install --global dotnet-ef --version 7.0.0-*
+
+criar migrations
+    dotnet ef migrations add (nome)
+
+executar migrations
+    dotnet ef database update
+    
