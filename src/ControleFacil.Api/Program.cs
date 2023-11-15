@@ -1,4 +1,6 @@
 using System.Text;
+using ControleFacil.Api.Damain.Repository.Classes;
+using ControleFacil.Api.Damain.Repository.Interfaces;
 using ControleFacil.Api.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +29,8 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     );
     builder.Services
     .AddSingleton(builder.Configuration)
-    .AddSingleton(builder.Environment);
+    .AddSingleton(builder.Environment)
+    .AddScoped<IUsuarioRepository, UsuarioRepository>();
 }
 
 // Configura o serviços da API.
