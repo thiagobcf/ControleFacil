@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ControleFacil.Api.Damain.services.Interfaces
+{
+    /// <summary>
+    /// interface generica para criação de serviços do tipo CRUD.
+    /// </summary>
+    /// <typeparam name="RQ">Contrato de request</typeparam>
+    /// <typeparam name="RS">Contrato de response</typeparam>
+    /// <typeparam name="I">Tipo do Id</typeparam> <summary>
+
+    public interface IService<RQ, RS, I> where RQ : class   // RQ= request;RS= Respose;I= Identificador
+    {
+        Task<IEnumerable<RS>> Obter(I idUsuario);
+        Task<RS> Obter(I id, I idUsuario);
+        Task<RS> Adicionar(RQ entiade, I idUsuario);
+        Task<RS> Atualizar(I id,RQ entiade, I idUsuario);
+        Task Inativar(I id, I idUsuario);
+    }
+}
