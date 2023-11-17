@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ControleFacil.Api.contract.Usuario;
 
 namespace ControleFacil.Api.Damain.Models
 {
@@ -21,6 +22,7 @@ namespace ControleFacil.Api.Damain.Models
         public DateTime DataCadastro{ get; set; }
 
         public DateTime? DataInatividade { get; set; }      // Nullable
+        
         
     }
 }

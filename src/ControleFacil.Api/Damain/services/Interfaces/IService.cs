@@ -16,8 +16,8 @@ namespace ControleFacil.Api.Damain.services.Interfaces
     {
         Task<IEnumerable<RS>> Obter(I idUsuario);
         Task<RS> Obter(I id, I idUsuario);
-        Task<RS> Adicionar(RQ entiade, I idUsuario);
-        Task<RS> Atualizar(I id,RQ entiade, I idUsuario);
+        Task<RS> Adicionar(RQ entidade, I idUsuario);
+        Task<RS> Atualizar(I id,RQ entidade, I idUsuario);
         Task Inativar(I id, I idUsuario);
     }
 }
