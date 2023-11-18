@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Serialization;
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,10 @@ using ControleFacil.Api.contract.Usuario;
 using ControleFacil.Api.Damain.Models;
 using ControleFacil.Api.Damain.Repository.Interfaces;
 using ControleFacil.Api.Damain.services.Interfaces;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using ControleFacil.Api.Exceptions;
+using Microsoft.IdentityModel.Tokens;
+
+
 
 namespace ControleFacil.Api.Damain.services.classes
 {
@@ -19,15 +23,30 @@ namespace ControleFacil.Api.Damain.services.classes
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
-        public UsuarioService(IUsuarioRepository usuarioRepository, IMapper mapper)
+        private readonly TokenService _tokenService;
+        public UsuarioService(IUsuarioRepository usuarioRepository, IMapper mapper, TokenService _tokenService)
         {
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
+            TokenService _tokenService;
         }
 
-        public Task<UsuarioLoginResponseContract> Autenticar(UsuarioLoginRequestContract usuarioLoginRequest)
+        public async Task<UsuarioLoginResponseContract> Autenticar(UsuarioLoginRequestContract usuarioLoginRequest)
         {
-            throw new NotImplementedException();
+            UsuarioResponseContract usuario = await Obter(usuarioLoginRequest.Email);
+        
+            var hashSenha = GerarHashSenha(usuarioLoginRequest.Senha);
+
+            if(usuario is null || usuario.Senha != hashSenha)
+            {
+                throw new AuthenticationException("Usuário ou senha inválida.");
+            }
+
+            return new UsuarioLoginResponseContract {
+                Id = usuario.Id,
+                Email = usuario.Email,
+                Token = _tokenService.GerarToken(_mapper.Map<Usuario>(usuario))
+            }; 
         }
 
         public async Task<UsuarioResponseContract> Adicionar(UsuarioRequestContract entidade, long idUsuario)
@@ -95,25 +114,4 @@ namespace ControleFacil.Api.Damain.services.classes
             return hashSenha;
         }
     }
-
-    [Serializable]
-    internal class NotFoundException : Exception
-    {
-        public NotFoundException()
-        {
-        }
-
-        public NotFoundException(string? message) : base(message)
-        {
-        }
-
-        public NotFoundException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-        protected NotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
 }
-
