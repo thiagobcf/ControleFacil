@@ -65,5 +65,15 @@ namespace ControleFacil.Api.Damain.Repository.Classes
             .Where(u => u.Id == id)
             .FirstOrDefaultAsync();
         }
+
+        public Task<object?> Obter(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<object>> Obter()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,19 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Intrinsics.Arm;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using ControleFacil.Api.contract.Usuario;
 using ControleFacil.Api.Damain.Models;
 using ControleFacil.Api.Damain.Repository.Interfaces;
 using ControleFacil.Api.Damain.services.Interfaces;
-using ControleFacil.Api.Exceptions;
-using Microsoft.IdentityModel.Tokens;
 
 
 
@@ -24,29 +16,28 @@ namespace ControleFacil.Api.Damain.services.classes
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
         private readonly TokenService _tokenService;
-        public UsuarioService(IUsuarioRepository usuarioRepository, IMapper mapper, TokenService _tokenService)
+        public UsuarioService(IUsuarioRepository usuarioRepository, IMapper mapper, TokenService tokenService)
         {
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
-            TokenService _tokenService;
+            _tokenService = tokenService;
         }
 
         public async Task<UsuarioLoginResponseContract> Autenticar(UsuarioLoginRequestContract usuarioLoginRequest)
         {
             UsuarioResponseContract usuario = await Obter(usuarioLoginRequest.Email);
-        
             var hashSenha = GerarHashSenha(usuarioLoginRequest.Senha);
 
             if(usuario is null || usuario.Senha != hashSenha)
             {
-                throw new AuthenticationException("Usuário ou senha inválida.");
+                throw new AuthenticationException("Usuário ou senha inválidos");
             }
 
             return new UsuarioLoginResponseContract {
                 Id = usuario.Id,
                 Email = usuario.Email,
                 Token = _tokenService.GerarToken(_mapper.Map<Usuario>(usuario))
-            }; 
+            };       
         }
 
         public async Task<UsuarioResponseContract> Adicionar(UsuarioRequestContract entidade, long idUsuario)
@@ -63,7 +54,7 @@ namespace ControleFacil.Api.Damain.services.classes
 
         public async Task<UsuarioResponseContract> Atualizar(long id, UsuarioRequestContract entidade, long idUsuario)
         {
-            _ = await Obter(id) ?? throw new NotFoundException("Usuario não encontrado para atualização.");
+            _ = await Obter(id) ?? throw new Exception("Usuario não encontrado para atualização.");
 
             var usuario = _mapper.Map<Usuario>(entidade);
             usuario.Id = id;
@@ -76,7 +67,7 @@ namespace ControleFacil.Api.Damain.services.classes
 
         public async Task Inativar(long id, long idUsuario)
         {
-            var usuario = await _usuarioRepository.Obter(id) ?? throw new NotFoundException("Usuario não encontrado para inativação.");
+            var usuario = await _usuarioRepository.Obter(id) ?? throw new Exception("Usuario não encontrado para inativação.");
             
             await _usuarioRepository.Deletar(_mapper.Map<Usuario>(usuario));
         }
@@ -114,4 +105,5 @@ namespace ControleFacil.Api.Damain.services.classes
             return hashSenha;
         }
     }
-}
+
+} 

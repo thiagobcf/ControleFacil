@@ -3,6 +3,8 @@ using AutoMapper;
 using ControleFacil.Api.AutoMapper;
 using ControleFacil.Api.Damain.Repository.Classes;
 using ControleFacil.Api.Damain.Repository.Interfaces;
+using ControleFacil.Api.Damain.services.classes;
+using ControleFacil.Api.Damain.services.Interfaces;
 using ControleFacil.Api.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +42,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddSingleton(builder.Configuration)
     .AddSingleton(builder.Environment)
     .AddSingleton(mapper)
-    .AddScoped<IUsuarioRepository, UsuarioRepository>();
+    .AddScoped<TokenService>()
+    .AddScoped<IUsuarioRepository, UsuarioRepository>()
+    .AddScoped<IUsuarioService, UsuarioService>();
     
 }
 
