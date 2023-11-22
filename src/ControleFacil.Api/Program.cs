@@ -1,6 +1,7 @@
 using System.Text;
 using AutoMapper;
 using ControleFacil.Api.AutoMapper;
+using ControleFacil.Api.contract.NaturezaDeLancamento;
 using ControleFacil.Api.Damain.Repository.Classes;
 using ControleFacil.Api.Damain.Repository.Interfaces;
 using ControleFacil.Api.Damain.services.classes;
@@ -46,7 +47,8 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<TokenService>()
     .AddScoped<IUsuarioRepository, UsuarioRepository>()
     .AddScoped<IUsuarioService, UsuarioService>()
-    .AddScoped<INaturezaDeLancamentoRepository, NaturezaDeLancamentoRepository>();
+    .AddScoped<INaturezaDeLancamentoRepository, NaturezaDeLancamentoRepository>()
+    .AddScoped<IService<NaturezaDeLancamentoRequestContract, NaturezaDeLancamentoResponseContract, long>, NaturezaDeLancamentoService>();
     
 }
 
