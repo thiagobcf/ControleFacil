@@ -2,6 +2,7 @@ using System.Text;
 using AutoMapper;
 using ControleFacil.Api.AutoMapper;
 using ControleFacil.Api.contract.NaturezaDeLancamento;
+using ControleFacil.Api.Damain.Models;
 using ControleFacil.Api.Damain.Repository.Classes;
 using ControleFacil.Api.Damain.Repository.Interfaces;
 using ControleFacil.Api.Damain.services.classes;
@@ -36,6 +37,7 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     var config = new MapperConfiguration(cfg => {
         cfg.AddProfile<UsuarioProfile>();
         cfg.AddProfile<NaturezaDeLancamentoProfile>();
+        cfg.AddProfile<ApagarProfile>();
     });
 
     IMapper mapper = config.CreateMapper();

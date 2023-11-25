@@ -14,28 +14,28 @@ using Microsoft.AspNetCore.Mvc;
 namespace ControleFacil.Api.Controllers
 {
     [ApiController]
-    [Route("naturezas-de-lancamento")]
-    public class NaturezaDeLancamentoController : BaseController
+    [Route("titulos-apagar")]
+    public class ApagarController : BaseController
     {
-        private readonly IService<NaturezaDeLancamentoRequestContract, NaturezaDeLancamentoResponseContract, long> _naturezaDelancamentoService;
+        private readonly IService<ApagarRequestContract, ApagarResponseContract, long> _apagarService;
 
         private long _idUsuario;
 
-        public NaturezaDeLancamentoController(
-            IService<NaturezaDeLancamentoRequestContract, NaturezaDeLancamentoResponseContract, long> naturezaDelancamentoService)
+        public ApagarController(
+            IService<ApagarRequestContract, ApagarResponseContract, long> apagarService)
         {
-            _naturezaDelancamentoService = naturezaDelancamentoService;
+            _apagarService = apagarService;
             
         }
         
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Adicionar(NaturezaDeLancamentoRequestContract contrato)
+        public async Task<IActionResult> Adicionar(ApagarRequestContract contrato)
         {
             try
             {
                 _idUsuario = ObterIdUsuarioLogado();
-                return Created("", await _naturezaDelancamentoService.Adicionar(contrato, _idUsuario));
+                return Created("", await _apagarService.Adicionar(contrato, _idUsuario));
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace ControleFacil.Api.Controllers
             try
             {
                 _idUsuario = ObterIdUsuarioLogado();
-                return Ok(await _naturezaDelancamentoService.Obter(_idUsuario));
+                return Ok(await _apagarService.Obter(_idUsuario));
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace ControleFacil.Api.Controllers
             try
             {
                 _idUsuario = ObterIdUsuarioLogado();
-                return Ok(await _naturezaDelancamentoService.Obter(id, _idUsuario));
+                return Ok(await _apagarService.Obter(id, _idUsuario));
             }
             catch (Exception ex)
             {
@@ -79,12 +79,12 @@ namespace ControleFacil.Api.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize]
-        public async Task<IActionResult> Atualizar(long id, NaturezaDeLancamentoRequestContract contrato)
+        public async Task<IActionResult> Atualizar(long id, ApagarRequestContract contrato)
         {
             try
             {
                 _idUsuario = ObterIdUsuarioLogado();
-                return Ok(await _naturezaDelancamentoService.Atualizar(id, contrato, _idUsuario));
+                return Ok(await _apagarService.Atualizar(id, contrato, _idUsuario));
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace ControleFacil.Api.Controllers
             try
             {
                 _idUsuario = ObterIdUsuarioLogado();
-                await _naturezaDelancamentoService.Inativar(id, _idUsuario);
+                await _apagarService.Inativar(id, _idUsuario);
                 return NoContent();
             }
             catch (Exception ex)
