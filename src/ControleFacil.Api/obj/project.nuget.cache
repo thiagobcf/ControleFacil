@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5ysK+Ko2KSZyEk1+BTiQ4J08wrr4T6wUwYzO37gvGSA6V4p/Ab3XEBipYLKPD3bsI9zaqKus3eIk9qy2ZdZkKg==",
+  "dgSpecHash": "VTsMuQxYH9+hRyw1idRJ5K8EygR7VJFgVriFF2LFS3cWjiNDRhnKgSpELq2fCgLv3QBPBUAutd8CBFE+c5BkKg==",
   "success": true,
   "projectFilePath": "/home/thiagobcf/projetos/ControleFacil/src/ControleFacil.Api/ControleFacil.Api.csproj",
   "expectedPackageFiles": [
