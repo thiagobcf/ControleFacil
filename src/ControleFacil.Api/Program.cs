@@ -53,7 +53,9 @@ static void ConfigurarInjecaoDeDependencia(WebApplicationBuilder builder)
     .AddScoped<INaturezaDeLancamentoRepository, NaturezaDeLancamentoRepository>()
     .AddScoped<IService<NaturezaDeLancamentoRequestContract, NaturezaDeLancamentoResponseContract, long>, NaturezaDeLancamentoService>()
     .AddScoped<IApagarRepository, ApagarRepository>()
-    .AddScoped<IService<ApagarRequestContract, ApagarResponseContract, long>, ApagarService>();
+    .AddScoped<IService<ApagarRequestContract, ApagarResponseContract, long>, ApagarService>()
+    .AddScoped<IAReceberRepository, AreceberRepository>()
+    .AddScoped<IService<AreceberRequestContract, AreceberResponseContract, long>, AreceberService>();
 
 }
 
