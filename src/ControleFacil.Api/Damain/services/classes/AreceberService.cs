@@ -8,6 +8,7 @@ using ControleFacil.Api.Damain.Models;
 using ControleFacil.Api.Damain.Repository.Classes;
 using ControleFacil.Api.Damain.Repository.Interfaces;
 using ControleFacil.Api.Damain.services.Interfaces;
+using ControleFacil.Api.Exceptions;
 
 namespace ControleFacil.Api.Damain.services.classes
 {    
@@ -24,6 +25,8 @@ namespace ControleFacil.Api.Damain.services.classes
         }
         public async Task<AreceberResponseContract> Adicionar(AreceberRequestContract entidade, long idUsuario)
         {
+            Validar(entidade);
+
             Areceber areceber = _mapper.Map<Areceber>(entidade);
 
             areceber.DataCadastro = DateTime.Now;
@@ -35,7 +38,9 @@ namespace ControleFacil.Api.Damain.services.classes
         }
 
         public async Task<AreceberResponseContract> Atualizar(long id, AreceberRequestContract entidade, long idUsuario)
-        {  
+        {
+            Validar(entidade);
+
             Areceber Areceber = await ObterPorIdVinculadoAoIdUsuario(id, idUsuario);
 
             var contrato = _mapper.Map<Areceber>(entidade);
@@ -84,10 +89,19 @@ namespace ControleFacil.Api.Damain.services.classes
 
             if (areceber is null || areceber.IdUsuario != idUsuario)
             {
-                throw new Exception($"Não foi encontrada nenhum titulo Areceber pelo id {id}");
+                throw new NotFoundException($"Não foi encontrada nenhum titulo Areceber pelo id {id}");
             }
 
             return areceber;
+        }
+
+        private void Validar(AreceberRequestContract entidade)
+        {
+            // incluir validações
+            if (entidade.ValorOriginal < 0 || entidade.ValorRecebido < 0)
+            {
+                throw new BadRequestException("os campos ValorOriginal e ValorRecebimento não podem ser negativos.");
+            }
         }
     }
 }

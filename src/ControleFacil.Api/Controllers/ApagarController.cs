@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using ControleFacil.Api.contract;
 using ControleFacil.Api.contract.NaturezaDeLancamento;
 using ControleFacil.Api.contract.Usuario;
 using ControleFacil.Api.Damain.services.classes;
 using ControleFacil.Api.Damain.services.Interfaces;
+using ControleFacil.Api.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -37,9 +39,17 @@ namespace ControleFacil.Api.Controllers
                 _idUsuario = ObterIdUsuarioLogado();
                 return Created("", await _apagarService.Adicionar(contrato, _idUsuario));
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(RetornarModelNotFound(ex));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(RetornarModelBadRequest(ex));          
+                
+            }
             catch (Exception ex)
             {
-                
                 return Problem(ex.Message);
             }
         }
@@ -52,6 +62,10 @@ namespace ControleFacil.Api.Controllers
             {
                 _idUsuario = ObterIdUsuarioLogado();
                 return Ok(await _apagarService.Obter(_idUsuario));
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(RetornarModelNotFound(ex));
             }
             catch (Exception ex)
             {
@@ -70,6 +84,10 @@ namespace ControleFacil.Api.Controllers
                 _idUsuario = ObterIdUsuarioLogado();
                 return Ok(await _apagarService.Obter(id, _idUsuario));
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(RetornarModelNotFound(ex));
+            }
             catch (Exception ex)
             {
                 return Problem(ex.Message);
@@ -86,9 +104,17 @@ namespace ControleFacil.Api.Controllers
                 _idUsuario = ObterIdUsuarioLogado();
                 return Ok(await _apagarService.Atualizar(id, contrato, _idUsuario));
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(RetornarModelNotFound(ex));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(RetornarModelBadRequest(ex));          
+                
+            }
             catch (Exception ex)
             {
-                _idUsuario = ObterIdUsuarioLogado();
                 return Problem(ex.Message);
             }
         }
@@ -103,6 +129,10 @@ namespace ControleFacil.Api.Controllers
                 _idUsuario = ObterIdUsuarioLogado();
                 await _apagarService.Inativar(id, _idUsuario);
                 return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(RetornarModelNotFound(ex));
             }
             catch (Exception ex)
             {

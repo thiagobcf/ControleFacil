@@ -8,6 +8,7 @@ using ControleFacil.Api.Damain.Models;
 using ControleFacil.Api.Damain.Repository.Classes;
 using ControleFacil.Api.Damain.Repository.Interfaces;
 using ControleFacil.Api.Damain.services.Interfaces;
+using ControleFacil.Api.Exceptions;
 
 namespace ControleFacil.Api.Damain.services.classes
 {    
@@ -24,6 +25,7 @@ namespace ControleFacil.Api.Damain.services.classes
         }
         public async Task<ApagarResponseContract> Adicionar(ApagarRequestContract entidade, long idUsuario)
         {
+            Validar(entidade);            
             Apagar Apagar = _mapper.Map<Apagar>(entidade);
 
             Apagar.DataCadastro = DateTime.Now;
@@ -35,7 +37,8 @@ namespace ControleFacil.Api.Damain.services.classes
         }
 
         public async Task<ApagarResponseContract> Atualizar(long id, ApagarRequestContract entidade, long idUsuario)
-        {  
+        {
+            Validar(entidade); 
             Apagar apagar = await ObterPorIdVinculadoAoIdUsuario(id, idUsuario);
 
             var contrato = _mapper.Map<Apagar>(entidade);
@@ -84,10 +87,19 @@ namespace ControleFacil.Api.Damain.services.classes
 
             if (apagar is null || apagar.IdUsuario != idUsuario)
             {
-                throw new Exception($"Não foi encontrada nenhum titulo apagar pelo id {id}");
+                throw new NotFoundException($"Não foi encontrada nenhum titulo apagar pelo id {id}");
             }
 
             return apagar;
+        }
+
+        private void Validar(ApagarRequestContract entidade)
+        {
+            // incluir validações
+            if (entidade.ValorOriginal < 0 || entidade.ValorPago < 0)
+            {
+                throw new BadRequestException("os campos ValorOriginal e ValorRecebimento não podem ser negativos.");
+            }
         }
     }
 }
