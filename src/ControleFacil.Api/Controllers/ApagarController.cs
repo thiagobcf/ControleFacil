@@ -21,8 +21,6 @@ namespace ControleFacil.Api.Controllers
     {
         private readonly IService<ApagarRequestContract, ApagarResponseContract, long> _apagarService;
 
-        private long _idUsuario;
-
         public ApagarController(
             IService<ApagarRequestContract, ApagarResponseContract, long> apagarService)
         {

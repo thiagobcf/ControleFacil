@@ -10,6 +10,7 @@ namespace ControleFacil.Api.Controllers
 {
     public abstract class BaseController : ControllerBase
     {
+        protected long _idUsuario;
         protected long ObterIdUsuarioLogado()
         {
             var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -20,8 +20,6 @@ namespace ControleFacil.Api.Controllers
     {
         private readonly IService<AreceberRequestContract, AreceberResponseContract, long> _areceberService;
 
-        private long _idUsuario;
-
         public AreceberController(
             IService<AreceberRequestContract, AreceberResponseContract, long> areceberService)
         {

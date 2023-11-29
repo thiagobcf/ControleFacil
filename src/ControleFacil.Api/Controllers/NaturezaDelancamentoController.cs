@@ -20,8 +20,6 @@ namespace ControleFacil.Api.Controllers
     {
         private readonly IService<NaturezaDeLancamentoRequestContract, NaturezaDeLancamentoResponseContract, long> _naturezaDelancamentoService;
 
-        private long _idUsuario;
-
         public NaturezaDeLancamentoController(
             IService<NaturezaDeLancamentoRequestContract, NaturezaDeLancamentoResponseContract, long> naturezaDelancamentoService)
         {
